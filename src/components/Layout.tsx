@@ -4,8 +4,13 @@ import Nav from './Nav';
 const Layout = () => {
   return (
     <>
-      <Nav />
-      <Outlet />
+      <div className="main">
+        <div className="gradient" />
+      </div>
+      <main className="app">
+        <Nav />
+        <Outlet />
+      </main>
     </>
   );
 };

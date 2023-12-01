@@ -13,7 +13,13 @@ interface IUser {
 const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [user, setUser] = useState<IUser | null>(null);
+  const [dropDownopen, setDropDownOpen] = useState(false);
   const navigate = useNavigate();
+
+  const onClickAddPost = () => {
+    navigate('/prompt/new');
+    setDropDownOpen(false);
+  };
 
   const onClickLogOut = async () => {
     try {
@@ -37,7 +43,9 @@ const Nav = () => {
     navigate('/login');
   };
 
-  //getLoggedInUser();
+  const dropDownToggle = () => {
+    setDropDownOpen(!dropDownopen);
+  };
 
   useEffect(() => {
     const getLoggedInUser = async () => {
@@ -62,37 +70,96 @@ const Nav = () => {
     };
 
     getLoggedInUser();
-    console.log('hello');
   }, [isLoggedIn]);
   return (
-    <div className="flex justify-between items-center w-full px-8 py-4 border">
-      <h1 className="text-3xl font-extrabold">Logo</h1>
-      {isLoggedIn ? (
-        <div className="flex">
-          <button className="px-4 py-1 rounded-full bg-black text-white font-medium">
-            Create Post
-          </button>
-          <button
-            className="px-4 py-1 rounded-full border border-black font-medium ml-3"
-            onClick={onClickLogOut}
-          >
-            LogOut
-          </button>
-          {user?.avatarUrl === '' ? (
-            <div className="w-12 h-12 bg-gray-300 rounded-full ml-10" />
-          ) : (
-            <img src={user?.avatarUrl} />
-          )}
+    <>
+      {/*컴퓨터 상단바*/}
+      <div className="hidden md:flex justify-between items-center w-full py-4">
+        <div className="flex space-x-3 justify-center items-center">
+          <img
+            alt="logo_image"
+            src="/assets/images/logo.svg"
+            className="w-12 h-12"
+          />
+          <span className="text-lg font-semibold">Promptopia</span>
         </div>
-      ) : (
-        <button
-          className="px-4 py-2 rounded-full bg-black text-white font-medium"
-          onClick={onClickLogin}
-        >
-          Login
-        </button>
-      )}
-    </div>
+        {isLoggedIn ? (
+          <div className="flex">
+            <button
+              onClick={onClickAddPost}
+              className="px-4 py-1 rounded-full bg-black text-white font-medium"
+            >
+              Create Post
+            </button>
+            <button
+              className="px-4 py-1 rounded-full border border-black font-medium ml-3"
+              onClick={onClickLogOut}
+            >
+              LogOut
+            </button>
+            {user?.avatarUrl === '' ? (
+              <div className="w-12 h-12 bg-gray-300 rounded-full ml-10" />
+            ) : (
+              <img src={user?.avatarUrl} alt="avatar_url" />
+            )}
+          </div>
+        ) : (
+          <button
+            className="px-4 py-2 rounded-full bg-black text-white font-medium"
+            onClick={onClickLogin}
+          >
+            Login
+          </button>
+        )}
+      </div>
+      {/*모바일 상단바*/}
+      <div className="md:hidden flex justify-between items-center w-full py-4">
+        <img
+          src="/assets/images/logo.svg"
+          className="w-12 h-12"
+          alt="logo_image"
+        />
+        {isLoggedIn ? (
+          <div className="flex relative">
+            {user?.avatarUrl === '' ? (
+              <div
+                onClick={dropDownToggle}
+                className="w-12 h-12 bg-gray-300 rounded-full ml-10"
+              />
+            ) : (
+              <img
+                src={user?.avatarUrl}
+                alt="avatar_url"
+                onClick={dropDownToggle}
+              />
+            )}
+            {dropDownopen ? (
+              <div className="absolute p-4 bg-white w-full min-w-[250px] top-full right-0 mt-3 rounded-xl flex flex-col justify-center items-center space-y-3">
+                <button
+                  onClick={onClickAddPost}
+                  className="px-4 py-2 rounded-full bg-black text-white font-medium"
+                >
+                  Create Post
+                </button>
+                <button
+                  className="px-4 py-2 rounded-full border border-black font-medium ml-3"
+                  onClick={onClickLogOut}
+                >
+                  LogOut
+                </button>
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <button
+            className="px-4 py-2 rounded-full bg-black text-white font-medium"
+            onClick={onClickLogin}
+          >
+            Login
+          </button>
+        )}
+      </div>
+    </>
   );
 };
 
