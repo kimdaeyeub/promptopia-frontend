@@ -16,6 +16,16 @@ const Nav = () => {
   const [dropDownopen, setDropDownOpen] = useState(false);
   const navigate = useNavigate();
 
+  const onClickProfile = () => {
+    navigate('/profile');
+    setDropDownOpen(false);
+  };
+
+  const onClickLogo = () => {
+    navigate('/');
+    setDropDownOpen(false);
+  };
+
   const onClickAddPost = () => {
     navigate('/prompt/new');
     setDropDownOpen(false);
@@ -33,6 +43,7 @@ const Nav = () => {
 
       if (response.ok) {
         setIsLoggedIn(false);
+        setDropDownOpen(false);
       }
     } catch (error) {
       console.log(`error is ${error}`);
@@ -77,6 +88,7 @@ const Nav = () => {
       <div className="hidden md:flex justify-between items-center w-full py-4">
         <div className="flex space-x-3 justify-center items-center">
           <img
+            onClick={onClickLogo}
             alt="logo_image"
             src="/assets/images/logo.svg"
             className="w-12 h-12"
@@ -97,11 +109,13 @@ const Nav = () => {
             >
               LogOut
             </button>
-            {user?.avatarUrl === '' ? (
-              <div className="w-12 h-12 bg-gray-300 rounded-full ml-10" />
-            ) : (
-              <img src={user?.avatarUrl} alt="avatar_url" />
-            )}
+            <div onClick={onClickProfile}>
+              {user?.avatarUrl === '' ? (
+                <div className="w-12 h-12 bg-gray-300 rounded-full ml-10" />
+              ) : (
+                <img src={user?.avatarUrl} alt="avatar_url" />
+              )}
+            </div>
           </div>
         ) : (
           <button
@@ -115,6 +129,7 @@ const Nav = () => {
       {/*모바일 상단바*/}
       <div className="md:hidden flex justify-between items-center w-full py-4">
         <img
+          onClick={onClickLogo}
           src="/assets/images/logo.svg"
           className="w-12 h-12"
           alt="logo_image"
@@ -137,15 +152,21 @@ const Nav = () => {
               <div className="absolute p-4 bg-white w-full min-w-[250px] top-full right-0 mt-3 rounded-xl flex flex-col justify-center items-center space-y-3">
                 <button
                   onClick={onClickAddPost}
-                  className="px-4 py-2 rounded-full bg-black text-white font-medium"
+                  className="px-4 py-3 rounded-full bg-black text-white font-medium w-full"
                 >
                   Create Post
                 </button>
                 <button
-                  className="px-4 py-2 rounded-full border border-black font-medium ml-3"
+                  className="px-4 py-3 rounded-full border border-black font-medium w-full"
                   onClick={onClickLogOut}
                 >
                   LogOut
+                </button>
+                <button
+                  className="px-4 py-3 rounded-full bg-black text-white font-medium w-full"
+                  onClick={onClickProfile}
+                >
+                  My Profile
                 </button>
               </div>
             ) : null}
