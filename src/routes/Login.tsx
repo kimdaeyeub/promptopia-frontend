@@ -19,19 +19,22 @@ const Login = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:8888/api/v1/user/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: email, password: password }),
-    });
-    const json = await response.json();
-    if (response.ok && !json.message) {
-      console.log(json);
-      setIsLoggedIn(true);
-      navigate('/');
+    try {
+      const response = await fetch('http://localhost:8888/api/v1/user/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, password: password }),
+      });
+      const json = await response.json();
+      if (response.ok && !json.message) {
+        setIsLoggedIn(true);
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (

@@ -8,6 +8,7 @@ interface IUser {
   password: string;
   username: string;
   avatarUrl: string;
+  _id: string;
 }
 
 const Nav = () => {
