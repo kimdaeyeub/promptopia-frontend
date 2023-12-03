@@ -6,7 +6,6 @@ const Home = () => {
       <h1 className="text-5xl font-extrabold text-center">
         Discover & Share
         <span className="bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent ">
-          {' '}
           AI-Powered Prompts
         </span>
       </h1>

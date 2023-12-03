@@ -17,6 +17,9 @@ const Nav = () => {
   const [dropDownopen, setDropDownOpen] = useState(false);
   const navigate = useNavigate();
 
+  const onClickSignUp = async () => {
+    navigate('/signUp');
+  };
   const onClickProfile = () => {
     navigate('/profile');
     setDropDownOpen(false);
@@ -74,6 +77,7 @@ const Nav = () => {
         if (response.ok) {
           setIsLoggedIn(true);
           setUser(json);
+          console.log(json);
         }
       } catch (error) {
         console.log(error);
@@ -114,17 +118,29 @@ const Nav = () => {
               {user?.avatarUrl === '' ? (
                 <div className="w-12 h-12 bg-gray-300 rounded-full ml-10" />
               ) : (
-                <img src={user?.avatarUrl} alt="avatar_url" />
+                <img
+                  src={user?.avatarUrl}
+                  alt="avatar_url"
+                  className="w-12 h-12 object-cover rounded-full ml-10"
+                />
               )}
             </div>
           </div>
         ) : (
-          <button
-            className="px-4 py-2 rounded-full bg-black text-white font-medium"
-            onClick={onClickLogin}
-          >
-            Login
-          </button>
+          <div className="flex">
+            <button
+              className="px-4 py-2 rounded-full bg-black text-white font-medium"
+              onClick={onClickLogin}
+            >
+              Login
+            </button>
+            <button
+              className="px-4 py-1 rounded-full border border-black font-medium ml-3"
+              onClick={onClickSignUp}
+            >
+              SignUp
+            </button>
+          </div>
         )}
       </div>
       {/*모바일 상단바*/}
@@ -147,6 +163,7 @@ const Nav = () => {
                 src={user?.avatarUrl}
                 alt="avatar_url"
                 onClick={dropDownToggle}
+                className="w-12 h-12 object-cover rounded-full"
               />
             )}
             {dropDownopen ? (
@@ -173,12 +190,20 @@ const Nav = () => {
             ) : null}
           </div>
         ) : (
-          <button
-            className="px-4 py-2 rounded-full bg-black text-white font-medium"
-            onClick={onClickLogin}
-          >
-            Login
-          </button>
+          <div className="space-x-1.5">
+            <button
+              className="px-4 py-2 rounded-full bg-black text-white font-medium"
+              onClick={onClickLogin}
+            >
+              Login
+            </button>
+            <button
+              className="px-4 py-2 rounded-full bg-black text-white font-medium"
+              onClick={onClickSignUp}
+            >
+              SignUp
+            </button>
+          </div>
         )}
       </div>
     </>

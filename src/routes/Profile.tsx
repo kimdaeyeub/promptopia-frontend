@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 
 interface IUser {
@@ -24,6 +25,11 @@ interface IPrompt {
 const Profile = () => {
   const [profile, setProfile] = useState<IUser | null>();
   const [prompts, setPrompts] = useState<IPrompt[] | []>();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const moveEditProfile = () => {
+    navigate('/profile/edit');
+  };
   useEffect(() => {
     const getMyProfile = async () => {
       try {
@@ -65,9 +71,9 @@ const Profile = () => {
     getMyPrompts();
   }, []);
   return (
-    <section className="w-full min-h-screen">
+    <section className="w-full min-h-screen pb-32 pt-12">
       {/*개인 프로필을 표현하기 위한 공간*/}
-      <div className="w-full mt-12 flex justify-center items-center py-12">
+      <div className="w-full flex justify-center items-center py-12">
         <div className="w-full h-full border-2 border-gray-200 rounded-2xl flex justify-center items-center py-20 space-x-36">
           {profile?.avatarUrl === '' ? (
             <div className="w-72 h-72 rounded-full bg-gray-300" />
@@ -86,7 +92,10 @@ const Profile = () => {
               </span>
             </div>
             {/*TODO:프로필 수정 화면및 기능 업데이트 필요*/}
-            <button className="px-4 py-2 bg-gray-200 rounded-lg text-lg font-medium">
+            <button
+              onClick={moveEditProfile}
+              className="px-4 py-2 bg-gray-200 rounded-lg text-lg font-medium"
+            >
               Edit Profile
             </button>
           </div>
@@ -94,9 +103,20 @@ const Profile = () => {
       </div>
 
       {/*개인이 소유한 글을 보여주는 공간*/}
-      {/*TODO:프롬프트 수정 및 삭제 화면 만들기*/}
+      {/*FIX:프롬프트 수정 및 삭제 화면 만들기*/}
+      {/*TODO:반응형 디자인 추가*/}
       <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  gap-8">
-        {prompts?.map((prompt) => <Card key={prompt._id} {...prompt} />)}
+        {location.pathname === '/profile'
+          ? prompts?.map((prompt) => (
+              <div className="cursor-pointer" key={prompt._id}>
+                <Card {...prompt} editable />
+              </div>
+            ))
+          : prompts?.map((prompt) => (
+              <div className="cursor-pointer" key={prompt._id}>
+                <Card {...prompt} />
+              </div>
+            ))}
       </div>
     </section>
   );
